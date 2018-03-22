@@ -21,25 +21,22 @@
         </StackLayout>
       </StackLayout>
       <StackLayout   ~mainContent orientation="vertical"  >
-          <Button class="btn btn-primary" @tap="$showModal(login)" @loaded="verificaLogado()">Login</Button>
+          <Button class="btn btn-primary" @tap="$showModal(login,{fullscreen: true})" @loaded="verificaLogado()">Login</Button>
           <Button class="btn btn-primary" @tap="$navigateTo(mapa)">Mapa</Button>
           <Button class="btn btn-primary" @tap="$navigateTo(draw)">Desenho</Button>
           <Button class="btn btn-primary" @tap="downloadDatabase()">Download</Button>
           <Button class="btn btn-primary" @tap="openDatabase()">Base de Dados</Button>
+          <Button class="btn btn-primary" @tap="tirarFoto()">Foto</Button>
+          <Button class="btn btn-primary" @tap="$navigateTo(lista)">Lista</Button>
+          <Button class="btn btn-primary" @tap="$showModal(tour,{fullscreen: true})">Tour</Button>
           <Progress :value="currentProgress" />
-          <CardView class="whiteCard" radius="5" loaded="cardLoaded" elevation="20" margin="10" id="batCard" v-if="items.length == 0">
-            <GridLayout rows="200, auto, auto" columns="auto, auto, *">
-              <Image src="~/images/batman.jpg" stretch="aspectFill" margin="10" colSpan="3" row="0" />
-              <Label text="Batman wants to be friends?" class="info" textWrap="true" row="1" colSpan="3" />
-              <Button text="DECLINE" class="blue" row="2" col="0" />
-              <Button text="ACCEPT" class="blue" row="2" col="2" />
-            </GridLayout>
-          </CardView>
-          <CardView class="blackCard" radius="5" loaded="cardLoaded" elevation="20" margin="10" v-for="item in items">
+
+
+          <!--<CardView class="blackCard" radius="5" loaded="cardLoaded" elevation="20" margin="10" v-for="item in items">
             <GridLayout rows="auto, auto, auto" columns="auto, auto, *">
               <Label :text="item.NOME" class="info" textWrap="true" row="1" colSpan="3" />
             </GridLayout>
-          </CardView>
+          </CardView>-->
       </StackLayout>
     </RadSideDrawer>
   </Page>
@@ -51,6 +48,8 @@
     import Login from './login/Login';
     import Mapa from './Mapa';
     import Draw from './Draw';
+    import Lista from './Lista';
+    import Tour from './Tour';
     import * as platformModule from 'tns-core-modules/platform'
 
     Vue.registerElement('RadSideDrawer', () => require('nativescript-ui-sidedrawer').RadSideDrawer);
@@ -60,6 +59,8 @@
 
     //import {DownloadProgress} from "nativescript-download-progress";
     import * as fs from "tns-core-modules/file-system";
+
+    import * as camera from "nativescript-camera";
 
 
     export default {
@@ -71,7 +72,8 @@
                 surprise: false,
                 db: null,
                 draw:Draw,
-                items: []
+                lista:Lista,
+                tour:Tour
             };
         },
         mounted(){
@@ -89,6 +91,18 @@
                     vm.$aura.verificaUsuarioLogado(vm,vm.$store);
                 },500);
 
+            },
+
+            tirarFoto: function () {
+                var options = { width: 300, height: 300, keepAspectRatio: false, saveToGallery: true };
+                camera.takePicture(options)
+                    .then(function (imageAsset) {
+                        console.log("Size: " + imageAsset.options.width + "x" + imageAsset.options.height);
+                        console.log("keepAspectRatio: " + imageAsset.options.keepAspectRatio);
+                        console.log("Photo saved in Photos/Gallery for Android or in Camera Roll for iOS");
+                    }).catch(function (err) {
+                    console.log("Error -> " + err.message);
+                });
             },
 
             downloadDatabase: function(){
