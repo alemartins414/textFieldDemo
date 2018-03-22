@@ -22,19 +22,10 @@
 </template>
 
 <script>
-
-    import AuraListView from './custom';
-
-    Vue.use(AuraListView);
-
-    import Vue from 'nativescript-vue';
-    //import
-    //Vue.registerElement("AuraListView", () => require("./custom").AuraListView);
-
     export default {
         data () {
             return {
-                items: [{nome:'Andre'},{nome:'Lorena'}],
+                items: [{nome:'Andre'},{nome:'Andre 2'}],
             };
         },
         methods: {
