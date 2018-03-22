@@ -142,7 +142,7 @@ function AuraLib () {
 
   this.verificaUsuarioLogado = function (owner, store) {
     if (!this.token) {
-      owner.$showModal(Login)
+      owner.$showModal(Login,{fullscreen: true});
     } else {
       this.callCommand('ConsultarUsuarioLogado', []).then(function successCallback (response) {
         var usu = response.RAIZ.USUARIO_LOGADO
