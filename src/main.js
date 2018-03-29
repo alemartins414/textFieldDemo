@@ -2,8 +2,6 @@ import Vue from 'nativescript-vue';
 
 import router from './router';
 
-import aura from './components/aura/aura';
-
 import store from './store';
 
 import './styles.scss';
@@ -19,7 +17,5 @@ new Vue({
   router,
 
   store,
-
-  aura,
 
 }).$start();
